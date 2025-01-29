@@ -121,7 +121,9 @@ def ingredientInv():
             for i in range(len(stockList)):
                 for j in shlList:
                     if stockList[i][0]==j[0]:
-                        newStockList[i][1]=int(j[1])
+                        newStockItem=int(newStockList[i][1])
+                        newStockItem+=int(j[1])
+                        newStockList[i][1]=newStockItem
             
             #used to add new items if they don't exist in the stock
             
@@ -229,22 +231,22 @@ def dishesMenu():
                 #check for ingredients that exist but is not enough
                 for i in ingredientList:
                     for j in stockList:
-                        if i[0]==j[0]:
-                            if int(i[1])>int(j[1]):
-                                print("Not enough",j[0],"need",int(i[1])-int(j[1]),"more!")
-                                moreCheckList.append([i[0],int(i[1]-int(j[1]))])
-                                possible=False
-                            
-                            ingCheckList.remove(i)
+                        if i[0] == j[0]:
+                            if int(i[1]) > int(j[1]):
+                                print("Not enough", j[0], "need", int(i[1]) - int(j[1]), "more!")
+                                moreCheckList.append([i[0], int(i[1]) - int(j[1])])
+                                possible = False
+                            if i in ingCheckList:
+                                ingCheckList.remove(i)
                             
                 #check for ingredient that don't exist in stock
                 for i in ingCheckList:
-                    print("There is no",i[0],"in the stock!")
-                    possible=False
+                    print("There is no", i[0], "in the stock!")
+                    possible = False
                 
-                if possible==False:
-                #ask whether these items need to be added a shopping list or not
-                    sListBool=input("Add These Items to Shopping List?(y/n)⥽ ")
+                if possible == False:
+                    #ask whether these items need to be added a shopping list or not
+                    sListBool = input("Add These Items to Shopping List?(y/n)⥽ ")
                     sList=[]
                 
                 #adds missing items in the dish to the shopping list
@@ -277,11 +279,13 @@ def dishesMenu():
                         writer.writerows(stockList)
                         
                         
-                        
-            
         #Allows users to add a new dish with its ingredients
         if choice==3:
-            ingAmount=int(input("Enter amount of ingredients⥽ "))
+            try:
+                ingAmount=int(input("Enter amount of ingredients⥽ "))
+            except:
+                print("Enter a number..")
+                continue
             ingredientList=[]
             for i in range(ingAmount):
                 ingredient=input("Enter an ingredient⥽ ")
@@ -310,7 +314,6 @@ def dishesMenu():
             btMenu=input("Back To Menu?")
         
         ret=0
-        
         #exit to main menu
         if choice==5:
             print("⥏ Exited Dishes Menu ⥑")
@@ -322,8 +325,6 @@ def dishesMenu():
             it to dict'''
         if choice==26:
             print("by Akj.")
-
-
 
 while True:
     #Main Menu
@@ -339,7 +340,6 @@ while True:
     if mode==1:
         ingredientInv()
         
-    
 #If user has selected to make a dish
     if mode==2:
         dishesMenu()
